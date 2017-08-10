@@ -1,0 +1,7 @@
+package cn.lishaoran.queue;
+
+import junit.framework.TestCase;
+
+public class QueueSender extends TestCase {
+
+}

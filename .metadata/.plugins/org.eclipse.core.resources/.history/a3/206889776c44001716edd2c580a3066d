@@ -1,0 +1,16 @@
+package cn.lishaoran.topic;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class TopicTest {
+
+	//初始化消费者
+	public static void main(String[] args){
+		
+		ApplicationContext applicationContext =new ClassPathXmlApplicationContext(new String[]{"classpath:/applicationContext--topic.xml"});
+		//利用反射得到消费者对象
+		JMSTopicConsumer jmsTopicConsumer =(JMSTopicConsumer)applicationContext.getBean("listenerReceiver");
+		System.out.println("初始化消息消费者");
+	}
+}

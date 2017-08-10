@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+     <!--配置JMS模板(Queue)，Spring提供的JMS工具类，用它发送、接受消息-->
+   <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+  	 <property name = "connectionFactory" ref="connectionFactory" />
+   </bean>
+
+    <!--配置JMS连接工厂-->
+    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <!--ActiveMQ服务的地址和端口-->
+        <property name = "brokerURL" value="tcp://127.0.0.1:61616" />
+    </bean>
+
+
+    <!--定义消息队列发送地址-->
+    <bean id="topic" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg >
+        	<value>testSpringTopic</value>
+        </constructor-arg>
+    </bean>
+    
+     <!--配置消息队列监听者（topic）-->
+    <bean id="listener" class="cn.lishaoran.topic.ConsumerMessageListener"></bean>
+
+
+
+   
+     <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name = "connectionFactory" ref="connectionFactory" />
+        <property name = "destination" ref="topic" />
+        <property name = "messageListener" ref="listener" /> 
+        <property name="pubSubDomain" value="true"/>
+        <property name = "receiveTimeout" value="10000" />
+    </bean>
+  
+    
+</beans>

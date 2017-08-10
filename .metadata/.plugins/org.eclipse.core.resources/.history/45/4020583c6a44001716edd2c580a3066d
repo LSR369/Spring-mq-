@@ -1,0 +1,6 @@
+package cn.lishaoran.topic;
+
+public class JMSTopicConsumer {
+
+	
+}

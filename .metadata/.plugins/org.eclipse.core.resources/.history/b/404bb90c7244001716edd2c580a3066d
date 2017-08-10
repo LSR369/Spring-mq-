@@ -1,0 +1,33 @@
+package cn.lishaoran.topic;
+
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+/**
+ * 生产者
+ * @author ALWZ
+ *
+ */
+public class TopicSender {
+	public static void main(String[] args){
+		
+		ApplicationContext applicationContext =new ClassPathXmlApplicationContext(new String[]{"classpath:/applicationContext--topic.xml"});
+		//利用反射得到jmstemplate和destination
+		JmsTemplate template=(JmsTemplate)applicationContext.getBean("jmsTemplate");
+		Destination destination=(Destination)applicationContext.getBean("topic");
+		template.send(destination,new MessageCreator() {
+			
+			public Message createMessage(Session session) throws JMSException {
+				return session.createTextMessage("发送消息：发布订阅模式测试！！！");
+			}
+		});
+		System.out.println("成功发送了一条JMS消息");
+	}
+
+}

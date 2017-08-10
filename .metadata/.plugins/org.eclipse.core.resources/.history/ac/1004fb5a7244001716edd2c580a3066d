@@ -1,0 +1,51 @@
+package cn.lishaoran.topic;
+
+import javax.jms.Destination;
+import javax.jms.TextMessage;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jms.core.JmsTemplate;
+/**\
+ * 消费者
+ * @author ALWZ
+ *
+ */
+public class JMSTopicConsumer {
+
+	private JmsTemplate jmsTemplate;
+
+	public JMSTopicConsumer() {
+	}
+
+	public JmsTemplate getJmsTemplate() {
+		return jmsTemplate;
+	}
+
+	public void setJmsTemplate(JmsTemplate jmsTemplate) {
+		this.jmsTemplate = jmsTemplate;
+	}
+	
+	//这里放弃了用配置文件来初始化消费者实例。
+	public void receive(){
+		ApplicationContext applicationContext =new ClassPathXmlApplicationContext("classpath:/applicationContext--topic.xml");
+		//利用反射得到jmstemplate和destination
+		JmsTemplate template=(JmsTemplate)applicationContext.getBean("jmsTemplate");
+		Destination destination=(Destination)applicationContext.getBean("topic");
+		
+		while (true) {
+			try {
+				TextMessage txtMessage =(TextMessage)jmsTemplate.receive(destination);
+				if (null!=txtMessage) {
+					System.out.println("[DB Proxy]"+ txtMessage);
+					System.out.println("[DB Proxy]收到消息内容为："+ txtMessage.getText());
+				}else {
+					break;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+}

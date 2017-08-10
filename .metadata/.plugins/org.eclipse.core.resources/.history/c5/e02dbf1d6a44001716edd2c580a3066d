@@ -1,0 +1,17 @@
+package cn.lishaoran.topic;
+
+import javax.jms.Destination;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jms.core.JmsTemplate;
+
+public class TopicSender {
+	public static void main(String[] args){
+		ApplicationContext applicationContext =new ClassPathXmlApplicationContext(new String[]{"classpath:/applicationContext--topic.xml"});
+		//利用反射得到jmstemplate和destination
+		JmsTemplate template=(JmsTemplate)applicationContext.getBean("jmsTemplate");
+		Destination destination=(Destination)applicationContext.getBean("destination");
+	}
+
+}

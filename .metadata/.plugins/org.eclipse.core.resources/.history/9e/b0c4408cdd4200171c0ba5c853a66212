@@ -1,0 +1,10 @@
+package cn.lishaoran.queue;
+/**
+ * 消息接收者
+ * @author ALWZ
+ *
+ */
+
+public class QueueReceiver {
+
+}
